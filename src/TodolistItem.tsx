@@ -1,5 +1,6 @@
 import React, {FC} from "react";
 import {TaskType} from "./App";
+import {Button} from "./Button";
 
 type TodolistType = {
     title: string
@@ -8,7 +9,7 @@ type TodolistType = {
 }
 
 
-export const TodolistItem: FC<TodolistType> = ({title,  tasks, date}) => {
+export const TodolistItem: FC<TodolistType> = ({title, tasks, date}) => {
     return (
         <div className="todolist">
             <h1>{title}</h1>
@@ -17,22 +18,22 @@ export const TodolistItem: FC<TodolistType> = ({title,  tasks, date}) => {
                 <button>+</button>
             </div>
             <ul>
-                <li>
-                    <input type="checkbox" checked={tasks[0].isDone}/>
-                    <span>{tasks[0].title}</span>
-                </li>
-                <li>
-                    <input type="checkbox" checked={true}/>
-                    <span>{tasks[1].title}</span></li>
-                <li>
-                    <input type="checkbox" checked={true}/>
-                    <span>{tasks[2].title}</span>
-                </li>
-                   </ul>
+                {tasks.length === 0 ?
+                    <p>Todolist is empty</p> :
+                    tasks.map(task => {
+                            return (
+                                <li key={task.id}>
+                                    <input type="checkbox" checked={task.isDone}/>
+                                    <span>{task.title}</span>
+                                </li>
+                            )
+                        }
+                    )}
+            </ul>
             <div>
-                <button>All</button>
-                <button>Active</button>
-                <button>Completed</button>
+                <Button title={"All"}/>
+                <Button title={"Active"}/>
+                <Button title={"Completed"}/>
                 <div>{date}</div>
             </div>
         </div>
