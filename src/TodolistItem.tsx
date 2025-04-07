@@ -9,16 +9,30 @@ type TodolistType = {
 
 export const TodolistItem: FC<TodolistType> = ({title,  tasks}) => {
     return (
-        <div>
+        <div className="todolist">
             <h1>{title}</h1>
+            <div>
+                <input/>
+                <button>+</button>
+            </div>
             <ul>
-                <input type="checkbox" checked={tasks[0].isDone}/>
-                <li>{tasks[0].title}</li>
-                <input type="checkbox" checked={true}/>
-                <li>{tasks[1].title}</li>
-                <input type="checkbox" checked={true}/>
-                <li>{tasks[2].title}</li>
+                <li>
+                    <input type="checkbox" checked={tasks[0].isDone}/>
+                    <span>{tasks[0].title}</span>
+                </li>
+                <li>
+                    <input type="checkbox" checked={true}/>
+                    <span>{tasks[1].title}</span></li>
+                <li>
+                    <input type="checkbox" checked={true}/>
+                    <span>{tasks[2].title}</span>
+                </li>
             </ul>
+            <div>
+                <button>All</button>
+                <button>Active</button>
+                <button>Completed</button>
+            </div>
         </div>
     )
 }

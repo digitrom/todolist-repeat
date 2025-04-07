@@ -19,7 +19,7 @@ export type TaskType = {
   isDone: boolean
 }
 
-function App() {
+const App = () => {
 
 const todolist_title_1: string = "What to learn"
 const todolist_title_2: string = "What to buy"
