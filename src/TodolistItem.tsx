@@ -6,19 +6,37 @@ type TodolistType = {
     title: string
     tasks: Array<TaskType>
     date?: string
-    setTasks: (tasks:TaskType[]) => void
+    setTasks: (tasks: TaskType[]) => void
 }
 
+type FilterTaskType = "All" | "Active" | "Completed"
 
-export const TodolistItem: FC<TodolistType> = ({title,
+
+export const TodolistItem: FC<TodolistType> = ({
+                                                   title,
                                                    tasks,
                                                    date,
-                                               setTasks}) => {
+                                                   setTasks
+                                               }) => {
+
+    const [filter, setFilter] = useState<FilterTaskType>("All")
 
 
+    function deleteTaskHandler(id: number) {
+        setTasks(tasks.filter((t) => t.id !== id))
+    }
 
-    function onClickHandler(id:number) {
-setTasks(tasks.filter((t)=> t.id !== id))
+    function onClickFilterHandler(filterValue: FilterTaskType) {
+        console.log(filterValue)
+        setFilter(filterValue)
+    }
+
+    let filteredTasks = tasks
+    if (filter === "Active") {
+        filteredTasks = tasks.filter((t) => !t.isDone)
+    }
+    if (filter === "Completed") {
+        filteredTasks = tasks.filter((t) => t.isDone)
     }
 
 
@@ -30,23 +48,23 @@ setTasks(tasks.filter((t)=> t.id !== id))
                 <button>+</button>
             </div>
             <ul>
-                {tasks.length === 0 ?
+                {filteredTasks.length === 0 ?
                     <p>Todolist is empty</p> :
-                    tasks.map(task => {
+                    filteredTasks.map(task => {
                             return (
                                 <li key={task.id}>
                                     <input type="checkbox" checked={task.isDone}/>
                                     <span>{task.title}</span>
-                                    <span><Button callback={() => onClickHandler(task.id)} title={"x"}/></span>
+                                    <span><Button callback={() => deleteTaskHandler(task.id)} title={"x"}/></span>
                                 </li>
                             )
                         }
                     )}
             </ul>
             <div>
-                {/*<Button title={"All"}/>*/}
-                {/*<Button title={"Active"}/>*/}
-                {/*<Button title={"Completed"}/>*/}
+                <Button title={"All"} callback={() => onClickFilterHandler("All")}/>
+                <Button title={"Active"} callback={() => onClickFilterHandler("Active")}/>
+                <Button title={"Completed"} callback={() => onClickFilterHandler("Completed")}/>
                 <div>{date}</div>
             </div>
         </div>
