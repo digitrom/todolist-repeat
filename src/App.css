@@ -4,9 +4,9 @@
   text-align: center;
 }
 
-/*.app > div {*/
-/*  margin-right: 50px;*/
-/*}*/
+.App > div {
+  margin-right: 50px;
+}
 
 
 .todolist {
