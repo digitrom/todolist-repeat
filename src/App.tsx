@@ -1,22 +1,26 @@
 import React, {useState} from 'react';
 import './App.css';
 import {TodolistItem} from "./TodolistItem";
+import {v1} from "uuid";
 
 
 export type TaskType = {
     title: string
-    id: number
+    id: string
     isDone: boolean
 }
 
 const App = () => {
 
     const[tasks_1, setTasks_1] = useState<TaskType[]>([
-        {title: "JS/TS", isDone: false, id: 1},
-        {title: "React", isDone: true, id: 2},
-        {title: "Redux", isDone: true, id: 3},
-        {title: "Svelte", isDone: false, id: 4},
+        {title: "JS/TS", isDone: false, id: v1()},
+        {title: "React", isDone: true, id: v1()},
+        {title: "Redux", isDone: true, id: v1()},
+        {title: "Svelte", isDone: false, id: v1()},
     ])
+    const addTask = () => {
+        const newTask = {title: "rrtt", isDone: false, id: 6}
+    }
 
     const todolist_title_1: string = "What to learn"
     const todolist_title_2: string = "What to buy"

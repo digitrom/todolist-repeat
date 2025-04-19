@@ -1,6 +1,7 @@
 import React, {FC, useState} from "react";
 import {TaskType} from "./App";
-import {Button} from "./Button";
+import { Button } from "./components/Button";
+import {Input} from "./components/Input";
 
 type TodolistType = {
     title: string
@@ -20,15 +21,20 @@ export const TodolistItem: FC<TodolistType> = ({
                                                }) => {
 
     const [filter, setFilter] = useState<FilterTaskType>("All")
+    const [onChangeValue, setOnChangeValue] = useState<string>("")
 
-
-    function deleteTaskHandler(id: number) {
+    // console.log(onChangeValue)
+    function deleteTask(id: string) {
         setTasks(tasks.filter((t) => t.id !== id))
     }
 
     function onClickFilterHandler(filterValue: FilterTaskType) {
-        console.log(filterValue)
         setFilter(filterValue)
+    }
+
+    function onChangeHandler(e: React.ChangeEvent<HTMLInputElement >) {
+        setOnChangeValue(e.currentTarget.value)
+        console.log(e.currentTarget.value)
     }
 
     let filteredTasks = tasks
@@ -44,7 +50,7 @@ export const TodolistItem: FC<TodolistType> = ({
         <div className="todolist">
             <h1>{title}</h1>
             <div>
-                <input/>
+                <Input title={onChangeValue} callback={onChangeHandler}/>
                 <button>+</button>
             </div>
             <ul>
@@ -55,7 +61,7 @@ export const TodolistItem: FC<TodolistType> = ({
                                 <li key={task.id}>
                                     <input type="checkbox" checked={task.isDone}/>
                                     <span>{task.title}</span>
-                                    <span><Button callback={() => deleteTaskHandler(task.id)} title={"x"}/></span>
+                                    <Button callback={() => deleteTask(task.id)} title={"x"}/>
                                 </li>
                             )
                         }
