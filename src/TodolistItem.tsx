@@ -32,10 +32,6 @@ export const TodolistItem: FC<TodolistType> = ({
         setFilter(filterValue)
     }
 
-    function onChangeHandler(e: React.ChangeEvent<HTMLInputElement >) {
-        setOnChangeValue(e.currentTarget.value)
-        console.log(e.currentTarget.value)
-    }
 
     let filteredTasks = tasks
     if (filter === "Active") {
@@ -50,7 +46,7 @@ export const TodolistItem: FC<TodolistType> = ({
         <div className="todolist">
             <h1>{title}</h1>
             <div>
-                <Input title={onChangeValue} callback={onChangeHandler}/>
+                <Input title={onChangeValue} setOnChangeValue={setOnChangeValue}/>
                 <button>+</button>
             </div>
             <ul>
