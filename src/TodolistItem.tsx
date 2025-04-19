@@ -1,6 +1,6 @@
 import React, {FC, useState} from "react";
 import {TaskType} from "./App";
-import { Button } from "./components/Button";
+import {Button} from "./components/Button";
 import {Input} from "./components/Input";
 
 type TodolistType = {
@@ -8,6 +8,7 @@ type TodolistType = {
     tasks: Array<TaskType>
     date?: string
     setTasks: (tasks: TaskType[]) => void
+    addTask: (onChangeValue: string) => void
 }
 
 type FilterTaskType = "All" | "Active" | "Completed"
@@ -17,7 +18,8 @@ export const TodolistItem: FC<TodolistType> = ({
                                                    title,
                                                    tasks,
                                                    date,
-                                                   setTasks
+                                                   setTasks,
+                                                   addTask
                                                }) => {
 
     const [filter, setFilter] = useState<FilterTaskType>("All")
@@ -32,6 +34,10 @@ export const TodolistItem: FC<TodolistType> = ({
         setFilter(filterValue)
     }
 
+    function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+        setOnChangeValue(e.currentTarget.value)
+        // console.log(e.currentTarget.value)
+    }
 
     let filteredTasks = tasks
     if (filter === "Active") {
@@ -46,8 +52,13 @@ export const TodolistItem: FC<TodolistType> = ({
         <div className="todolist">
             <h1>{title}</h1>
             <div>
-                <Input title={onChangeValue} setOnChangeValue={setOnChangeValue}/>
-                <button>+</button>
+                <Input title={onChangeValue} callback={onChangeHandler}/>
+                <Button title={"+"}
+                        callback={()=>{
+                            addTask(onChangeValue);
+                            setOnChangeValue("")
+                            setFilter("All")
+                        }}></Button>
             </div>
             <ul>
                 {filteredTasks.length === 0 ?

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import {TodolistItem} from "./TodolistItem";
-import {v1} from "uuid";
+import {v4} from "uuid";
 
 
 export type TaskType = {
@@ -13,13 +13,14 @@ export type TaskType = {
 const App = () => {
 
     const[tasks_1, setTasks_1] = useState<TaskType[]>([
-        {title: "JS/TS", isDone: false, id: v1()},
-        {title: "React", isDone: true, id: v1()},
-        {title: "Redux", isDone: true, id: v1()},
-        {title: "Svelte", isDone: false, id: v1()},
+        {title: "JS/TS", isDone: false, id: v4()},
+        {title: "React", isDone: true, id: v4()},
+        {title: "Redux", isDone: true, id: v4()},
+        {title: "Svelte", isDone: false, id: v4()},
     ])
-    const addTask = () => {
-        const newTask = {title: "rrtt", isDone: false, id: 6}
+    const addTask = (onChangeValue:string) => {
+        const newTask:TaskType = {title: onChangeValue, isDone: false, id: v4()}
+        setTasks_1([newTask, ...tasks_1])
     }
 
     const todolist_title_1: string = "What to learn"
@@ -30,7 +31,9 @@ const App = () => {
             <TodolistItem title={todolist_title_1}
                           tasks={tasks_1}
                           setTasks={setTasks_1}
-                          date={"5.04.2025"}/>
+                          date={"5.04.2025"}
+                          addTask={addTask}
+            />
         </div>
     );
 }

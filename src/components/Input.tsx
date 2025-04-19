@@ -1,16 +1,13 @@
 import React, {FC} from "react";
 
 type InputType = {
-    setOnChangeValue: (title:string) => void
+    callback: (e: React.ChangeEvent<HTMLInputElement>) => void
     title: string
 
 }
 
-export const Input: FC<InputType> = ({title, setOnChangeValue}) => {
-    function onChangeHandler(e: React.ChangeEvent<HTMLInputElement >) {
-        setOnChangeValue(e.currentTarget.value)
-    }
+export const Input: FC<InputType> = ({title, callback}) => {
     return (
-        <input value={title} onChange={onChangeHandler}/>
+        <input value={title} onChange={callback}/>
     )
 }
