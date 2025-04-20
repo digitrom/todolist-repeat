@@ -20,7 +20,9 @@ const App = () => {
     ])
     const addTask = (onChangeValue:string) => {
         const newTask:TaskType = {title: onChangeValue, isDone: false, id: v4()}
-        setTasks_1([newTask, ...tasks_1])
+        if (onChangeValue.trim()) {
+            setTasks_1([newTask, ...tasks_1])
+        }
     }
 
     const todolist_title_1: string = "What to learn"

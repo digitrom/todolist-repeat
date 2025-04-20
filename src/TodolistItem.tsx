@@ -37,7 +37,16 @@ export const TodolistItem: FC<TodolistType> = ({
     function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         setOnChangeValue(e.currentTarget.value)
         // console.log(e.currentTarget.value)
+
     }
+
+    function onKeyDownHandler(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === 'Enter') {
+            addTask(onChangeValue)
+            setOnChangeValue("")
+        }
+    }
+
 
     let filteredTasks = tasks
     if (filter === "Active") {
@@ -52,9 +61,9 @@ export const TodolistItem: FC<TodolistType> = ({
         <div className="todolist">
             <h1>{title}</h1>
             <div>
-                <Input title={onChangeValue} callback={onChangeHandler}/>
+                <Input title={onChangeValue} callback={onChangeHandler} onKeyDownHandler={onKeyDownHandler}/>
                 <Button title={"+"}
-                        callback={()=>{
+                        callback={() => {
                             addTask(onChangeValue);
                             setOnChangeValue("")
                             setFilter("All")
