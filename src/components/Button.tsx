@@ -1,7 +1,7 @@
 import {FC} from "react";
 
 type ButtonType = {
-    title: string
+    title: string | null
     callback: () => void
 }
 

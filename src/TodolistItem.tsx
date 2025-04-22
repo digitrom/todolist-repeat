@@ -42,9 +42,13 @@ export const TodolistItem: FC<TodolistType> = ({
 
     function onKeyDownHandler(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
-            addTask(onChangeValue)
+            addTask(onChangeValue.trim())
             setOnChangeValue("")
         }
+    }
+
+    function deleteAllTasks() {
+        setTasks([])
     }
 
 
@@ -87,6 +91,7 @@ export const TodolistItem: FC<TodolistType> = ({
                 <Button title={"All"} callback={() => onClickFilterHandler("All")}/>
                 <Button title={"Active"} callback={() => onClickFilterHandler("Active")}/>
                 <Button title={"Completed"} callback={() => onClickFilterHandler("Completed")}/>
+                <div><Button title={"Delete all tasks"} callback={deleteAllTasks}/></div>
                 <div>{date}</div>
             </div>
         </div>
