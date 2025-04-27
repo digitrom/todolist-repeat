@@ -9,6 +9,7 @@ type TodolistType = {
     date?: string
     setTasks: (tasks: TaskType[]) => void
     addTask: (onChangeValue: string) => void
+    taskStatusHandler: (isDone: boolean, taskId: string) => void
 }
 
 type FilterTaskType = "All" | "Active" | "Completed"
@@ -19,16 +20,19 @@ export const TodolistItem: FC<TodolistType> = ({
                                                    tasks,
                                                    date,
                                                    setTasks,
-                                                   addTask
+                                                   addTask,
+                                                   taskStatusHandler
                                                }) => {
 
     const [filter, setFilter] = useState<FilterTaskType>("All")
     const [onChangeValue, setOnChangeValue] = useState<string>("")
+    // const [taskStatus, setTaskStatus] = useState<boolean>(false)
 
     // console.log(onChangeValue)
     function deleteTask(id: string) {
         setTasks(tasks.filter((t) => t.id !== id))
     }
+
 
     function onClickFilterHandler(filterValue: FilterTaskType) {
         setFilter(filterValue)
@@ -77,9 +81,11 @@ export const TodolistItem: FC<TodolistType> = ({
                 {filteredTasks.length === 0 ?
                     <p>Todolist is empty</p> :
                     filteredTasks.map(task => {
+
                             return (
                                 <li key={task.id}>
-                                    <input type="checkbox" checked={task.isDone}/>
+                                    <input type="checkbox" checked={task.isDone}
+                                           onChange={(e) => taskStatusHandler(e.currentTarget.checked, task.id)}/>
                                     <span>{task.title}</span>
                                     <Button callback={() => deleteTask(task.id)} title={"x"}/>
                                 </li>

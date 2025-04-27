@@ -25,8 +25,13 @@ const App = () => {
         }
     }
 
+    const taskStatusHandler = (isDone:boolean, taskId:string ) => {
+        console.log('change me', taskId)
+      setTasks_1(tasks_1.map((t)=> t.id === taskId ? {...t, isDone: isDone}: t))
+ }
+
+
     const todolist_title_1: string = "What to learn"
-    const todolist_title_2: string = "What to buy"
 
     return (
         <div className="App">
@@ -35,6 +40,7 @@ const App = () => {
                           setTasks={setTasks_1}
                           date={"5.04.2025"}
                           addTask={addTask}
+                          taskStatusHandler={taskStatusHandler}
             />
         </div>
     );
