@@ -18,6 +18,14 @@
   margin: 15px;
 }
 
+.error {
+  color:red;
+}
+
+.input-error {
+  border: 1px solid red;
+}
+
 /*.li {*/
 /*  display: inline-block;*/
 /*}*/

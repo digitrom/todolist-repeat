@@ -18,10 +18,14 @@ const App = () => {
         {title: "Redux", isDone: true, id: v4()},
         {title: "Svelte", isDone: false, id: v4()},
     ])
+
+    const [error, setError] = useState<string | null>(null)
     const addTask = (onChangeValue:string) => {
         const newTask:TaskType = {title: onChangeValue, isDone: false, id: v4()}
         if (onChangeValue.trim()) {
             setTasks_1([newTask, ...tasks_1])
+        } else {
+            setError("Title is required")
         }
     }
 
@@ -41,6 +45,8 @@ const App = () => {
                           date={"5.04.2025"}
                           addTask={addTask}
                           taskStatusHandler={taskStatusHandler}
+                          error={error}
+                          setError={setError}
             />
         </div>
     );

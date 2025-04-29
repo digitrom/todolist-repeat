@@ -10,6 +10,8 @@ type TodolistType = {
     setTasks: (tasks: TaskType[]) => void
     addTask: (onChangeValue: string) => void
     taskStatusHandler: (isDone: boolean, taskId: string) => void
+    error: string | null
+    setError: (error: string | null) => void
 }
 
 type FilterTaskType = "All" | "Active" | "Completed"
@@ -21,11 +23,14 @@ export const TodolistItem: FC<TodolistType> = ({
                                                    date,
                                                    setTasks,
                                                    addTask,
-                                                   taskStatusHandler
+                                                   taskStatusHandler,
+                                                   error,
+                                                   setError
                                                }) => {
 
     const [filter, setFilter] = useState<FilterTaskType>("All")
     const [onChangeValue, setOnChangeValue] = useState<string>("")
+
     // const [taskStatus, setTaskStatus] = useState<boolean>(false)
 
     // console.log(onChangeValue)
@@ -45,6 +50,7 @@ export const TodolistItem: FC<TodolistType> = ({
     }
 
     function onKeyDownHandler(e: React.KeyboardEvent<HTMLInputElement>) {
+            setError(null)
         if (e.key === 'Enter') {
             addTask(onChangeValue.trim())
             setOnChangeValue("")
@@ -69,7 +75,12 @@ export const TodolistItem: FC<TodolistType> = ({
         <div className="todolist">
             <h1>{title}</h1>
             <div>
-                <Input title={onChangeValue} callback={onChangeHandler} onKeyDownHandler={onKeyDownHandler}/>
+                <Input
+                    className={error ? "input-error" : ""}
+                    title={onChangeValue}
+                    callback={onChangeHandler}
+                    onKeyDownHandler={onKeyDownHandler}
+                />
                 <Button title={"+"}
                         callback={() => {
                             addTask(onChangeValue);
@@ -77,6 +88,7 @@ export const TodolistItem: FC<TodolistType> = ({
                             setFilter("All")
                         }}></Button>
             </div>
+            {error && <div className={"error"}>{error}</div>}
             <ul>
                 {filteredTasks.length === 0 ?
                     <p>Todolist is empty</p> :
