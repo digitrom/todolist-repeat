@@ -3,10 +3,11 @@ import {FC} from "react";
 type ButtonType = {
     title: string | null
     callback: () => void
+    className?: string
 }
 
-export const Button: FC<ButtonType> = ({title,callback}) => {
+export const Button: FC<ButtonType> = ({title,callback, className}) => {
     return (
-        <button onClick={callback}>{title}</button>
+        <button  className={className} onClick={callback}>{title}</button>
     )
 }

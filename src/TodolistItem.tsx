@@ -50,7 +50,7 @@ export const TodolistItem: FC<TodolistType> = ({
     }
 
     function onKeyDownHandler(e: React.KeyboardEvent<HTMLInputElement>) {
-            setError(null)
+        setError(null)
         if (e.key === 'Enter') {
             addTask(onChangeValue.trim())
             setOnChangeValue("")
@@ -95,7 +95,7 @@ export const TodolistItem: FC<TodolistType> = ({
                     filteredTasks.map(task => {
 
                             return (
-                                <li key={task.id}>
+                                <li className={task.isDone ? "isDone" : ""} key={task.id}>
                                     <input type="checkbox" checked={task.isDone}
                                            onChange={(e) => taskStatusHandler(e.currentTarget.checked, task.id)}/>
                                     <span>{task.title}</span>
@@ -106,9 +106,12 @@ export const TodolistItem: FC<TodolistType> = ({
                     )}
             </ul>
             <div>
-                <Button title={"All"} callback={() => onClickFilterHandler("All")}/>
-                <Button title={"Active"} callback={() => onClickFilterHandler("Active")}/>
-                <Button title={"Completed"} callback={() => onClickFilterHandler("Completed")}/>
+                <Button className={filter === "All" ? "active-filter" : ""} title={"All"}
+                        callback={() => onClickFilterHandler("All")}/>
+                <Button className={filter === "Active" ? "active-filter" : ""} title={"Active"}
+                        callback={() => onClickFilterHandler("Active")}/>
+                <Button className={filter === "Completed" ? "active-filter" : ""} title={"Completed"}
+                        callback={() => onClickFilterHandler("Completed")}/>
                 <div><Button title={"Delete all tasks"} callback={deleteAllTasks}/></div>
                 <div>{date}</div>
             </div>
