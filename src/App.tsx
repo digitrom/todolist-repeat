@@ -21,8 +21,9 @@ const App = () => {
 
     const [error, setError] = useState<string | null>(null)
     const addTask = (onChangeValue:string) => {
-        const newTask:TaskType = {title: onChangeValue, isDone: false, id: v4()}
-        if (onChangeValue.trim()) {
+        const trimmedTitle = onChangeValue.trim()
+        const newTask:TaskType = {title: trimmedTitle, isDone: false, id: v4()}
+        if (trimmedTitle.trim()) {
             setTasks_1([newTask, ...tasks_1])
         } else {
             setError("Title is required")
