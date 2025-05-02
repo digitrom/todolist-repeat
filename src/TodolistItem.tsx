@@ -1,47 +1,48 @@
 import React, {FC, useState} from "react";
-import {TaskType} from "./App";
+import {FilterTaskType, TaskType} from "./App";
 import {Button} from "./components/Button";
 import {Input} from "./components/Input";
 
 type TodolistType = {
     title: string
-    tasks: Array<TaskType>
+    filteredTasks: Array<TaskType>
     date?: string
     setTasks: (tasks: TaskType[]) => void
     addTask: (onChangeValue: string) => void
     taskStatusHandler: (isDone: boolean, taskId: string) => void
     error: string | null
     setError: (error: string | null) => void
+    filter: FilterTaskType
+    onClickFilterHandler: (filterValue:FilterTaskType,todolistId:string )=> void
+    todoId: string
 }
-
-type FilterTaskType = "All" | "Active" | "Completed"
 
 
 export const TodolistItem: FC<TodolistType> = ({
                                                    title,
-                                                   tasks,
+                                                   filteredTasks,
                                                    date,
                                                    setTasks,
                                                    addTask,
                                                    taskStatusHandler,
                                                    error,
-                                                   setError
+                                                   setError,
+                                                   filter,
+                                                   onClickFilterHandler,
+                                                   todoId
                                                }) => {
 
-    const [filter, setFilter] = useState<FilterTaskType>("All")
     const [onChangeValue, setOnChangeValue] = useState<string>("")
 
     // const [taskStatus, setTaskStatus] = useState<boolean>(false)
 
     // console.log(onChangeValue)
     function deleteTask(id: string) {
-        setTasks(tasks.filter((t) => t.id !== id))
+        setTasks(filteredTasks.filter((t) => t.id !== id))
     }
 
 
-    function onClickFilterHandler(filterValue: FilterTaskType) {
-        setFilter(filterValue)
-    }
+
 
     function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         setOnChangeValue(e.currentTarget.value)
@@ -62,13 +63,6 @@ export const TodolistItem: FC<TodolistType> = ({
     }
 
 
-    let filteredTasks = tasks
-    if (filter === "Active") {
-        filteredTasks = tasks.filter((t) => !t.isDone)
-    }
-    if (filter === "Completed") {
-        filteredTasks = tasks.filter((t) => t.isDone)
-    }
 
 
     return (
@@ -85,7 +79,6 @@ export const TodolistItem: FC<TodolistType> = ({
                         callback={() => {
                             addTask(onChangeValue);
                             setOnChangeValue("")
-                            setFilter("All")
                         }}></Button>
             </div>
             {error && <div className={"error"}>{error}</div>}
@@ -107,13 +100,12 @@ export const TodolistItem: FC<TodolistType> = ({
             </ul>
             <div>
                 <Button className={filter === "All" ? "active-filter" : ""} title={"All"}
-                        callback={() => onClickFilterHandler("All")}/>
+                        callback={() => onClickFilterHandler("All",todoId  )}/>
                 <Button className={filter === "Active" ? "active-filter" : ""} title={"Active"}
-                        callback={() => onClickFilterHandler("Active")}/>
+                        callback={() => onClickFilterHandler("Active",todoId)}/>
                 <Button className={filter === "Completed" ? "active-filter" : ""} title={"Completed"}
-                        callback={() => onClickFilterHandler("Completed")}/>
+                        callback={() => onClickFilterHandler("Completed",todoId)}/>
                 <div><Button title={"Delete all tasks"} callback={deleteAllTasks}/></div>
-                <div>{date}</div>
             </div>
         </div>
     )
