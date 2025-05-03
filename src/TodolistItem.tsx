@@ -13,41 +13,32 @@ type TodolistType = {
     error: string | null
     setError: (error: string | null) => void
     filter: FilterTaskType
-    onClickFilterHandler: (filterValue:FilterTaskType,todolistId:string )=> void
+    onClickFilterHandler: (filterValue: FilterTaskType, todolistId: string) => void
     todoId: string
+    deleteTask: (taskId: string) => void
+    deleteAllTasks: () => void
 }
 
 
 export const TodolistItem: FC<TodolistType> = ({
                                                    title,
                                                    filteredTasks,
-                                                   date,
-                                                   setTasks,
                                                    addTask,
                                                    taskStatusHandler,
                                                    error,
                                                    setError,
                                                    filter,
                                                    onClickFilterHandler,
-                                                   todoId
+                                                   todoId,
+                                                   deleteTask,
+                                                   deleteAllTasks
                                                }) => {
 
     const [onChangeValue, setOnChangeValue] = useState<string>("")
 
-    // const [taskStatus, setTaskStatus] = useState<boolean>(false)
-
-    // console.log(onChangeValue)
-    function deleteTask(id: string) {
-        setTasks(filteredTasks.filter((t) => t.id !== id))
-    }
-
-
-
 
     function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         setOnChangeValue(e.currentTarget.value)
-        // console.log(e.currentTarget.value)
-
     }
 
     function onKeyDownHandler(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -57,13 +48,6 @@ export const TodolistItem: FC<TodolistType> = ({
             setOnChangeValue("")
         }
     }
-
-    function deleteAllTasks() {
-        setTasks([])
-    }
-
-
-
 
     return (
         <div className="todolist">
@@ -100,11 +84,11 @@ export const TodolistItem: FC<TodolistType> = ({
             </ul>
             <div>
                 <Button className={filter === "All" ? "active-filter" : ""} title={"All"}
-                        callback={() => onClickFilterHandler("All",todoId  )}/>
+                        callback={() => onClickFilterHandler("All", todoId)}/>
                 <Button className={filter === "Active" ? "active-filter" : ""} title={"Active"}
-                        callback={() => onClickFilterHandler("Active",todoId)}/>
+                        callback={() => onClickFilterHandler("Active", todoId)}/>
                 <Button className={filter === "Completed" ? "active-filter" : ""} title={"Completed"}
-                        callback={() => onClickFilterHandler("Completed",todoId)}/>
+                        callback={() => onClickFilterHandler("Completed", todoId)}/>
                 <div><Button title={"Delete all tasks"} callback={deleteAllTasks}/></div>
             </div>
         </div>

@@ -51,6 +51,14 @@ const App = () => {
         }
     }
 
+    function deleteAllTasks() {
+        setTasks_1([])
+    }
+
+    function deleteTask(id: string) {
+        setTasks_1(tasks_1.filter((t) => t.id !== id))
+    }
+
     const taskStatusHandler = (isDone: boolean, taskId: string) => {
         console.log('change me', taskId)
         setTasks_1(tasks_1.map((t) => t.id === taskId ? {...t, isDone: isDone} : t))
@@ -78,7 +86,8 @@ const App = () => {
                     filter={tl.filter}
                     onClickFilterHandler={onClickFilterHandler}
                     todoId={tl.id}
-
+                    deleteTask={deleteTask}
+                    deleteAllTasks={deleteAllTasks}
                 />
             })}
 
