@@ -1,38 +1,34 @@
 import React, {FC, useState} from "react";
-import {FilterTaskType, TaskType} from "./App";
+import {FilterTaskType, TaskType, Todolist} from "./App";
 import {Button} from "./components/Button";
 import {Input} from "./components/Input";
 
-type TodolistType = {
-    title: string
-    filteredTasks: Array<TaskType>
-    date?: string
-    setTasks: (tasks: TaskType[]) => void
-    addTask: (onChangeValue: string) => void
-    taskStatusHandler: (isDone: boolean, taskId: string) => void
+type TodolistItemType = {
+    filteredTasks: {[key:string]:Array<TaskType>}
+    addTask: (onChangeValue: string, todolistId: string) => void
+    taskStatusHandler: (todolistId: string, isDone: boolean, taskId: string) => void
     error: string | null
     setError: (error: string | null) => void
-    filter: FilterTaskType
     onClickFilterHandler: (filterValue: FilterTaskType, todolistId: string) => void
-    todoId: string
-    deleteTask: (taskId: string) => void
-    deleteAllTasks: () => void
+    todolist: Todolist
+    deleteTask: (id: string, taskId: string) => void
+    deleteAllTasks: (id: string) => void
 }
 
 
-export const TodolistItem: FC<TodolistType> = ({
-                                                   title,
-                                                   filteredTasks,
-                                                   addTask,
-                                                   taskStatusHandler,
-                                                   error,
-                                                   setError,
-                                                   filter,
-                                                   onClickFilterHandler,
-                                                   todoId,
-                                                   deleteTask,
-                                                   deleteAllTasks
-                                               }) => {
+export const TodolistItem: FC<TodolistItemType> = (props: TodolistItemType) => {
+
+    const {
+        filteredTasks,
+        addTask,
+        taskStatusHandler,
+        error,
+        setError,
+        onClickFilterHandler,
+        todolist: {id, title, filter},
+        deleteTask,
+        deleteAllTasks
+    } = props
 
     const [onChangeValue, setOnChangeValue] = useState<string>("")
 
@@ -44,7 +40,7 @@ export const TodolistItem: FC<TodolistType> = ({
     function onKeyDownHandler(e: React.KeyboardEvent<HTMLInputElement>) {
         setError(null)
         if (e.key === 'Enter') {
-            addTask(onChangeValue.trim())
+            addTask(onChangeValue.trim(), id)
             setOnChangeValue("")
         }
     }
@@ -61,22 +57,22 @@ export const TodolistItem: FC<TodolistType> = ({
                 />
                 <Button title={"+"}
                         callback={() => {
-                            addTask(onChangeValue);
+                            addTask(onChangeValue.trim(), id);
                             setOnChangeValue("")
                         }}></Button>
             </div>
             {error && <div className={"error"}>{error}</div>}
             <ul>
-                {filteredTasks.length === 0 ?
+                {filteredTasks[id].length === 0 ?
                     <p>Todolist is empty</p> :
-                    filteredTasks.map(task => {
+                    filteredTasks[id].map(task => {
 
                             return (
                                 <li className={task.isDone ? "isDone" : ""} key={task.id}>
                                     <input type="checkbox" checked={task.isDone}
-                                           onChange={(e) => taskStatusHandler(e.currentTarget.checked, task.id)}/>
+                                           onChange={(e) => taskStatusHandler(id, e.currentTarget.checked, task.id)}/>
                                     <span>{task.title}</span>
-                                    <Button callback={() => deleteTask(task.id)} title={"x"}/>
+                                    <Button callback={() => deleteTask(id, task.id)} title={"x"}/>
                                 </li>
                             )
                         }
@@ -84,12 +80,12 @@ export const TodolistItem: FC<TodolistType> = ({
             </ul>
             <div>
                 <Button className={filter === "All" ? "active-filter" : ""} title={"All"}
-                        callback={() => onClickFilterHandler("All", todoId)}/>
+                        callback={() => onClickFilterHandler("All", id)}/>
                 <Button className={filter === "Active" ? "active-filter" : ""} title={"Active"}
-                        callback={() => onClickFilterHandler("Active", todoId)}/>
+                        callback={() => onClickFilterHandler("Active", id)}/>
                 <Button className={filter === "Completed" ? "active-filter" : ""} title={"Completed"}
-                        callback={() => onClickFilterHandler("Completed", todoId)}/>
-                <div><Button title={"Delete all tasks"} callback={deleteAllTasks}/></div>
+                        callback={() => onClickFilterHandler("Completed", id)}/>
+                <div><Button title={"Delete all tasks"} callback={()=>deleteAllTasks(id)}/></div>
             </div>
         </div>
     )
