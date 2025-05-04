@@ -10,6 +10,10 @@ export type TaskType = {
     isDone: boolean
 }
 
+export type TasksState = {
+    [key: string]: TaskType[]
+}
+
 export type Todolist = {
     id: string
     title: string
@@ -27,14 +31,14 @@ const App = () => {
         {id: todolistId2, title: "Todo2", filter: "Active"}
     ])
 
-    const [tasks_1, setTasks_1] = useState({
-        [todolistId1]:[
-        {title: "JS/TS", isDone: false, id: v4()},
-        {title: "React", isDone: true, id: v4()},
-        {title: "Redux", isDone: true, id: v4()},
-        {title: "Svelte", isDone: false, id: v4()},
-    ],
-        [todolistId2]:[
+    const [tasks_1, setTasks_1] = useState<TasksState>({
+        [todolistId1]: [
+            {title: "JS/TS", isDone: false, id: v4()},
+            {title: "React", isDone: true, id: v4()},
+            {title: "Redux", isDone: true, id: v4()},
+            {title: "Svelte", isDone: false, id: v4()},
+        ],
+        [todolistId2]: [
             {title: "Rest API", isDone: false, id: v4()},
             {title: "GraphQL", isDone: false, id: v4()},
             {title: "Express", isDone: false, id: v4()},
@@ -43,33 +47,42 @@ const App = () => {
 
 
     const [error, setError] = useState<string | null>(null)
-    const addTask = (onChangeValue: string, todolistId:string) => {
+    const addTask = (onChangeValue: string, todolistId: string) => {
         const trimmedTitle = onChangeValue.trim()
         const newTask: TaskType = {title: trimmedTitle, isDone: false, id: v4()}
         if (trimmedTitle.trim()) {
-            setTasks_1({ ...tasks_1, [todolistId]:[...tasks_1[todolistId], newTask] })
+            setTasks_1({...tasks_1, [todolistId]: [...tasks_1[todolistId], newTask]})
         } else {
             setError("Title is required")
         }
     }
 
     function onClickFilterHandler(filterValue: FilterTaskType, todolistId: string) {
-            setTodolists(todolists.map(tl=>
-                 tl.id === todolistId ? { ...tl, filter: filterValue } : tl
-            ))
+        setTodolists(todolists.map(tl =>
+            tl.id === todolistId ? {...tl, filter: filterValue} : tl
+        ))
     }
 
     function deleteAllTasks(todolistId: string) {
         setTasks_1({...tasks_1, [todolistId]: []})
     }
 
-    function deleteTask(todolistId:string, taskId: string) {
+    function deleteTask(todolistId: string, taskId: string) {
         setTasks_1(
             {...tasks_1, [todolistId]: tasks_1[todolistId].filter((t) => t.id !== taskId)})
     }
 
-    const taskStatusHandler = (todolistId:string, isDone: boolean, taskId: string) => {
-        setTasks_1({...tasks_1, [todolistId]: tasks_1[todolistId].map((t) => t.id === taskId ? {...t, isDone: isDone} : t)})
+    const taskStatusHandler = (todolistId: string, isDone: boolean, taskId: string) => {
+        setTasks_1({
+            ...tasks_1,
+            [todolistId]: tasks_1[todolistId].map((t) => t.id === taskId ? {...t, isDone: isDone} : t)
+        })
+    }
+
+    function deleteTodolist(todolistId: string) {
+        setTodolists(todolists.filter(tl => tl.id !== todolistId))
+        delete tasks_1[todolistId]
+        setTasks_1({...tasks_1})
     }
 
     return (
@@ -93,6 +106,7 @@ const App = () => {
                     todolist={tl}
                     deleteTask={deleteTask}
                     deleteAllTasks={deleteAllTasks}
+                    deleteTodolist={deleteTodolist}
                 />
             })}
 

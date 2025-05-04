@@ -13,10 +13,11 @@ type TodolistItemType = {
     todolist: Todolist
     deleteTask: (id: string, taskId: string) => void
     deleteAllTasks: (id: string) => void
+    deleteTodolist: (todolistId: string) => void
 }
 
 
-export const TodolistItem: FC<TodolistItemType> = (props: TodolistItemType) => {
+export const TodolistItem: FC<TodolistItemType> = (props) => {
 
     const {
         filteredTasks,
@@ -27,7 +28,8 @@ export const TodolistItem: FC<TodolistItemType> = (props: TodolistItemType) => {
         onClickFilterHandler,
         todolist: {id, title, filter},
         deleteTask,
-        deleteAllTasks
+        deleteAllTasks,
+        deleteTodolist
     } = props
 
     const [onChangeValue, setOnChangeValue] = useState<string>("")
@@ -45,9 +47,16 @@ export const TodolistItem: FC<TodolistItemType> = (props: TodolistItemType) => {
         }
     }
 
+     function deleteTodolistHandler () {
+        deleteTodolist(id)
+    }
+
     return (
         <div className="todolist">
-            <h1>{title}</h1>
+            <div className={"container"}>
+                <h3>{title}</h3>
+                <Button title={'x'} callback={deleteTodolistHandler}/>
+            </div>
             <div>
                 <Input
                     className={error ? "input-error" : ""}
