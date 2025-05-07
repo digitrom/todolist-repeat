@@ -1,14 +1,12 @@
-import React, {FC, useState} from "react";
+import React, {FC} from "react";
 import {FilterTaskType, TaskType, Todolist} from "./App";
 import {Button} from "./components/Button";
-import {Input} from "./components/Input";
+import {CreateItem} from "./components/CreateItem";
 
 type TodolistItemType = {
-    filteredTasks: {[key:string]:Array<TaskType>}
-    addTask: (onChangeValue: string, todolistId: string) => void
+    filteredTasks: { [key: string]: Array<TaskType> }
+    addTask: (title: string, todolistId: string) => void
     taskStatusHandler: (todolistId: string, isDone: boolean, taskId: string) => void
-    error: string | null
-    setError: (error: string | null) => void
     onClickFilterHandler: (filterValue: FilterTaskType, todolistId: string) => void
     todolist: Todolist
     deleteTask: (id: string, taskId: string) => void
@@ -23,8 +21,6 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
         filteredTasks,
         addTask,
         taskStatusHandler,
-        error,
-        setError,
         onClickFilterHandler,
         todolist: {id, title, filter},
         deleteTask,
@@ -32,22 +28,12 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
         deleteTodolist
     } = props
 
-    const [onChangeValue, setOnChangeValue] = useState<string>("")
-
-
-    function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-        setOnChangeValue(e.currentTarget.value)
+    const addItem = (title: string) => {
+        addTask(title, id)
     }
 
-    function onKeyDownHandler(e: React.KeyboardEvent<HTMLInputElement>) {
-        setError(null)
-        if (e.key === 'Enter') {
-            addTask(onChangeValue.trim(), id)
-            setOnChangeValue("")
-        }
-    }
 
-     function deleteTodolistHandler () {
+    function deleteTodolistHandler() {
         deleteTodolist(id)
     }
 
@@ -57,20 +43,8 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
                 <h3>{title}</h3>
                 <Button title={'x'} callback={deleteTodolistHandler}/>
             </div>
-            <div>
-                <Input
-                    className={error ? "input-error" : ""}
-                    title={onChangeValue}
-                    callback={onChangeHandler}
-                    onKeyDownHandler={onKeyDownHandler}
-                />
-                <Button title={"+"}
-                        callback={() => {
-                            addTask(onChangeValue.trim(), id);
-                            setOnChangeValue("")
-                        }}></Button>
-            </div>
-            {error && <div className={"error"}>{error}</div>}
+
+            <CreateItem addItem={addItem}/>
             <ul>
                 {filteredTasks[id].length === 0 ?
                     <p>Todolist is empty</p> :
@@ -94,7 +68,7 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
                         callback={() => onClickFilterHandler("Active", id)}/>
                 <Button className={filter === "Completed" ? "active-filter" : ""} title={"Completed"}
                         callback={() => onClickFilterHandler("Completed", id)}/>
-                <div><Button title={"Delete all tasks"} callback={()=>deleteAllTasks(id)}/></div>
+                <div><Button title={"Delete all tasks"} callback={() => deleteAllTasks(id)}/></div>
             </div>
         </div>
     )
