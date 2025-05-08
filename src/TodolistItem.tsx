@@ -2,6 +2,7 @@ import React, {FC} from "react";
 import {FilterTaskType, TaskType, Todolist} from "./App";
 import {Button} from "./components/Button";
 import {CreateItem} from "./components/CreateItem";
+import {EditableSpan} from "./EditableSpan";
 
 type TodolistItemType = {
     filteredTasks: { [key: string]: Array<TaskType> }
@@ -54,7 +55,7 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
                                 <li className={task.isDone ? "isDone" : ""} key={task.id}>
                                     <input type="checkbox" checked={task.isDone}
                                            onChange={(e) => taskStatusHandler(id, e.currentTarget.checked, task.id)}/>
-                                    <span>{task.title}</span>
+                                    <EditableSpan title={task.title}/>
                                     <Button callback={() => deleteTask(id, task.id)} title={"x"}/>
                                 </li>
                             )
@@ -73,3 +74,4 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
         </div>
     )
 }
+
