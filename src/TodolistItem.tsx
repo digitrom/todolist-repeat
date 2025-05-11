@@ -13,6 +13,8 @@ type TodolistItemType = {
     deleteTask: (id: string, taskId: string) => void
     deleteAllTasks: (id: string) => void
     deleteTodolist: (todolistId: string) => void
+    changeTaskTitle: (todolistId:string, title: string, taskId:string)=> void
+    changeTodolistTitle: (todolistId:string, title: string)=> void
 }
 
 
@@ -26,7 +28,9 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
         todolist: {id, title, filter},
         deleteTask,
         deleteAllTasks,
-        deleteTodolist
+        deleteTodolist,
+        changeTaskTitle,
+        changeTodolistTitle
     } = props
 
     const addItem = (title: string) => {
@@ -41,7 +45,7 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
     return (
         <div className="todolist">
             <div className={"container"}>
-                <h3>{title}</h3>
+                <h3><EditableSpan onChange={(title)=>changeTodolistTitle(title, id)} value={title}/></h3>
                 <Button title={'x'} callback={deleteTodolistHandler}/>
             </div>
 
@@ -50,12 +54,17 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
                 {filteredTasks[id].length === 0 ?
                     <p>Todolist is empty</p> :
                     filteredTasks[id].map(task => {
-
+                            function  changeTaskTitleHandler(title:string){
+                                changeTaskTitle(id, task.id, title)
+                            }
+                            function  changeTaskStatusHandler(e: React.ChangeEvent<HTMLInputElement>){
+                                taskStatusHandler(id, e.currentTarget.checked, task.id)
+                            }
                             return (
                                 <li className={task.isDone ? "isDone" : ""} key={task.id}>
                                     <input type="checkbox" checked={task.isDone}
-                                           onChange={(e) => taskStatusHandler(id, e.currentTarget.checked, task.id)}/>
-                                    <EditableSpan title={task.title}/>
+                                           onChange={changeTaskStatusHandler}/>
+                                    <EditableSpan onChange={changeTaskTitleHandler} value={task.title} />
                                     <Button callback={() => deleteTask(id, task.id)} title={"x"}/>
                                 </li>
                             )

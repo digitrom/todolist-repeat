@@ -47,8 +47,6 @@ const App = () => {
     })
 
 
-
-
     function onClickFilterHandler(filterValue: FilterTaskType, todolistId: string) {
         setTodolists(todolists.map(tl =>
             tl.id === todolistId ? {...tl, filter: filterValue} : tl
@@ -71,23 +69,36 @@ const App = () => {
         })
     }
 
+    function changeTaskTitle(todolistId: string, taskId: string, newTitle: string) {
+        const newTasks = {
+            ...tasks,
+            [todolistId]: tasks[todolistId].map(t => t.id === taskId ? {...t, title: newTitle} : t)
+        }
+        setTasks(newTasks)
+    }
+
     function deleteTodolist(todolistId: string) {
         setTodolists(todolists.filter(tl => tl.id !== todolistId))
         delete tasks[todolistId]
         setTasks({...tasks})
     }
 
-    function addTask (title:string, todolistId:string){
+    function addTask(title: string, todolistId: string) {
         const newTask: TaskType = {title: title, isDone: false, id: v4()}
         setTasks({...tasks, [todolistId]: [...tasks[todolistId], newTask]})
     }
 
-    function addTodolist (title:string) {
-      const newTodo: Todolist = {id: v4(), title: title, filter: "Active"}
+    function addTodolist(title: string) {
+        const newTodo: Todolist = {id: v4(), title: title, filter: "Active"}
         setTodolists([newTodo, ...todolists])
         setTasks({...tasks, [newTodo.id]: []})
 
     }
+
+    function changeTodolistTitle (newTitle: string, todolistId: string) {
+        setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title: newTitle}: tl))
+    }
+//q
 
     return (
         <div className="App">
@@ -110,6 +121,8 @@ const App = () => {
                     deleteTask={deleteTask}
                     deleteAllTasks={deleteAllTasks}
                     deleteTodolist={deleteTodolist}
+                    changeTaskTitle={changeTaskTitle}
+                    changeTodolistTitle={changeTodolistTitle}
                 />
             })}
 

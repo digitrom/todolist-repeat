@@ -2,7 +2,7 @@
   display: flex;
   padding: 30px;
   text-align: center;
-  background-color: black;
+  background-color: lightgray;
 }
 
 .App > div {
