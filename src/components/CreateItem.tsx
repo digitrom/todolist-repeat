@@ -1,4 +1,5 @@
 import React, {FC, useState} from "react";
+import {Button} from "@mui/material";
 
 type Props = {
     addItem: (title: string) => void
@@ -38,7 +39,7 @@ export const CreateItem: FC<Props> = ({addItem}) => {
                 onKeyDown={createItemOnEnterHandler }
                 onChange={changeItemTitleHandler }
             />
-            <button onClick={createItemHandler}>+</button>
+            <Button onClick={createItemHandler} variant="contained" color={"inherit"}  >+</Button>
             {
                 error && <div className={"error"}>{error}</div>
             }

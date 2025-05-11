@@ -1,8 +1,9 @@
 import React, {FC} from "react";
 import {FilterTaskType, TaskType, Todolist} from "./App";
-import {Button} from "./components/Button";
+import {ButtonUni} from "./components/ButtonUni";
 import {CreateItem} from "./components/CreateItem";
 import {EditableSpan} from "./EditableSpan";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type TodolistItemType = {
     filteredTasks: { [key: string]: Array<TaskType> }
@@ -46,7 +47,7 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
         <div className="todolist">
             <div className={"container"}>
                 <h3><EditableSpan onChange={(title)=>changeTodolistTitle(title, id)} value={title}/></h3>
-                <Button title={'x'} callback={deleteTodolistHandler}/>
+                <ButtonUni title={'x'} callback={deleteTodolistHandler}/>
             </div>
 
             <CreateItem addItem={addItem}/>
@@ -65,20 +66,20 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
                                     <input type="checkbox" checked={task.isDone}
                                            onChange={changeTaskStatusHandler}/>
                                     <EditableSpan onChange={changeTaskTitleHandler} value={task.title} />
-                                    <Button callback={() => deleteTask(id, task.id)} title={"x"}/>
+                                    <ButtonUni  iconOnly icon={<DeleteIcon/>} callback={() => deleteTask(id, task.id)}/>
                                 </li>
                             )
                         }
                     )}
             </ul>
             <div>
-                <Button className={filter === "All" ? "active-filter" : ""} title={"All"}
+                <ButtonUni className={filter === "All" ? "active-filter" : ""} title={"All"}
                         callback={() => onClickFilterHandler("All", id)}/>
-                <Button className={filter === "Active" ? "active-filter" : ""} title={"Active"}
+                <ButtonUni className={filter === "Active" ? "active-filter" : ""} title={"Active"}
                         callback={() => onClickFilterHandler("Active", id)}/>
-                <Button className={filter === "Completed" ? "active-filter" : ""} title={"Completed"}
+                <ButtonUni className={filter === "Completed" ? "active-filter" : ""} title={"Completed"}
                         callback={() => onClickFilterHandler("Completed", id)}/>
-                <div><Button title={"Delete all tasks"} callback={() => deleteAllTasks(id)}/></div>
+                <div><ButtonUni title={"Delete all tasks"} callback={() => deleteAllTasks(id)}/></div>
             </div>
         </div>
     )
