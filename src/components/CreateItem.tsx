@@ -1,5 +1,6 @@
 import React, {FC, useState} from "react";
-import {Button, TextField} from "@mui/material";
+import {Button, IconButton, TextField} from "@mui/material";
+import {ControlPoint} from "@mui/icons-material";
 
 type Props = {
     addItem: (title: string) => void
@@ -40,12 +41,10 @@ export const CreateItem: FC<Props> = ({addItem}) => {
                 onKeyDown={createItemOnEnterHandler}
                 onChange={changeItemTitleHandler}
                 error={!!error}
+                helperText={error}
             />
 
-            <Button onClick={createItemHandler} variant="contained" color={"inherit"}>+</Button>
-            {
-                error && <div className={"error"}>{error}</div>
-            }
+            <IconButton  onClick={createItemHandler} color={"primary"}><ControlPoint/></IconButton>
         </div>
 
     )

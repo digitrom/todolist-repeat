@@ -4,6 +4,7 @@ import {ButtonUni} from "./components/ButtonUni";
 import {CreateItem} from "./components/CreateItem";
 import {EditableSpan} from "./EditableSpan";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {Checkbox} from "@mui/material";
 
 type TodolistItemType = {
     filteredTasks: { [key: string]: Array<TaskType> }
@@ -65,7 +66,7 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
 
                             return (
                                 <li className={task.isDone ? "isDone" : ""} key={task.id}>
-                                    <input type="checkbox" checked={task.isDone}
+                                    <Checkbox color={"primary"} checked={task.isDone}
                                            onChange={changeTaskStatusHandler}/>
                                     <EditableSpan onChange={changeTaskTitleHandler} value={task.title}/>
                                     <ButtonUni iconOnly icon={<DeleteIcon/>} callback={() => deleteTask(id, task.id)}/>

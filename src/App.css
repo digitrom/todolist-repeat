@@ -1,32 +1,7 @@
 .App {
   display: flex;
-  padding: 30px;
-  text-align: center;
-}
-
-.App > div {
-  margin-right: 50px;
-}
-
-
-.todolist {
-  border: 1px solid grey;
-  border-radius: 13px;
-  background-color: azure;
-  padding: 15px;
-  margin: 15px;
-}
-
-.error {
-  color:red;
-}
-
-.input-error {
-  border: 1px solid red;
-}
-
-.active-filter {
-  background-color: aquamarine;
+  flex-direction: column;
+    width: 100vw;
 }
 
 .isDone {
@@ -38,6 +13,3 @@
   align-items: center;
 }
 
-/*.li {*/
-/*  display: inline-block;*/
-/*}*/
