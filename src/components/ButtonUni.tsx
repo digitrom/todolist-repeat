@@ -26,6 +26,7 @@ type ButtonType = TextButtonProps | IconOnlyButtonProps;
 
 export const ButtonUni: FC<ButtonType> = (props) => {
     const {
+
         callback,
         className,
         color = "inherit",
@@ -48,6 +49,6 @@ export const ButtonUni: FC<ButtonType> = (props) => {
                 size={size}
         >
             {props.title}
-            </Button>
+        </Button>
     )
 }

@@ -55,6 +55,7 @@ const App = () => {
 
     function deleteAllTasks(todolistId: string) {
         setTasks({...tasks, [todolistId]: []})
+
     }
 
     function deleteTask(todolistId: string, taskId: string) {

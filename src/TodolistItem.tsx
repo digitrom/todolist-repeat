@@ -14,8 +14,8 @@ type TodolistItemType = {
     deleteTask: (id: string, taskId: string) => void
     deleteAllTasks: (id: string) => void
     deleteTodolist: (todolistId: string) => void
-    changeTaskTitle: (todolistId:string, title: string, taskId:string)=> void
-    changeTodolistTitle: (todolistId:string, title: string)=> void
+    changeTaskTitle: (todolistId: string, title: string, taskId: string) => void
+    changeTodolistTitle: (todolistId: string, title: string) => void
 }
 
 
@@ -46,8 +46,8 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
     return (
         <div className="todolist">
             <div className={"container"}>
-                <h3><EditableSpan onChange={(title)=>changeTodolistTitle(title, id)} value={title}/></h3>
-                <ButtonUni title={'x'} callback={deleteTodolistHandler}/>
+                <h3><EditableSpan onChange={(title) => changeTodolistTitle(title, id)} value={title}/></h3>
+                <ButtonUni iconOnly icon={<DeleteIcon/>} callback={deleteTodolistHandler}/>
             </div>
 
             <CreateItem addItem={addItem}/>
@@ -55,31 +55,33 @@ export const TodolistItem: FC<TodolistItemType> = (props) => {
                 {filteredTasks[id].length === 0 ?
                     <p>Todolist is empty</p> :
                     filteredTasks[id].map(task => {
-                            function  changeTaskTitleHandler(title:string){
+                            function changeTaskTitleHandler(title: string) {
                                 changeTaskTitle(id, task.id, title)
                             }
-                            function  changeTaskStatusHandler(e: React.ChangeEvent<HTMLInputElement>){
+
+                            function changeTaskStatusHandler(e: React.ChangeEvent<HTMLInputElement>) {
                                 taskStatusHandler(id, e.currentTarget.checked, task.id)
                             }
+
                             return (
                                 <li className={task.isDone ? "isDone" : ""} key={task.id}>
                                     <input type="checkbox" checked={task.isDone}
                                            onChange={changeTaskStatusHandler}/>
-                                    <EditableSpan onChange={changeTaskTitleHandler} value={task.title} />
-                                    <ButtonUni  iconOnly icon={<DeleteIcon/>} callback={() => deleteTask(id, task.id)}/>
+                                    <EditableSpan onChange={changeTaskTitleHandler} value={task.title}/>
+                                    <ButtonUni iconOnly icon={<DeleteIcon/>} callback={() => deleteTask(id, task.id)}/>
                                 </li>
                             )
                         }
                     )}
             </ul>
             <div>
-                <ButtonUni className={filter === "All" ? "active-filter" : ""} title={"All"}
-                        callback={() => onClickFilterHandler("All", id)}/>
-                <ButtonUni className={filter === "Active" ? "active-filter" : ""} title={"Active"}
-                        callback={() => onClickFilterHandler("Active", id)}/>
-                <ButtonUni className={filter === "Completed" ? "active-filter" : ""} title={"Completed"}
-                        callback={() => onClickFilterHandler("Completed", id)}/>
-                <div><ButtonUni title={"Delete all tasks"} callback={() => deleteAllTasks(id)}/></div>
+                <ButtonUni variant={filter === "All" ? "contained": "text"} title={"All"}
+                           callback={() => onClickFilterHandler("All", id)}/>
+                <ButtonUni variant={filter === "Active" ? "contained" : "text"} title={"Active"}
+                           callback={() => onClickFilterHandler("Active", id)}/>
+                <ButtonUni variant={filter === "Completed" ? "contained" : "text"} title={"Completed"}
+                           callback={() => onClickFilterHandler("Completed", id)}/>
+                <div><ButtonUni variant={"text"} title={"Delete all tasks"} callback={() => deleteAllTasks(id)}/></div>
             </div>
         </div>
     )

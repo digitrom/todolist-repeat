@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import {Button} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 
 type Props = {
     addItem: (title: string) => void
@@ -10,18 +10,18 @@ export const CreateItem: FC<Props> = ({addItem}) => {
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<string | null>(null)
 
-    function changeItemTitleHandler (e: React.ChangeEvent<HTMLInputElement>) {
+    function changeItemTitleHandler(e: React.ChangeEvent<HTMLInputElement>) {
         setTitle(e.currentTarget.value)
         setError(null)
     }
 
-    function createItemOnEnterHandler (e: React.KeyboardEvent<HTMLInputElement>) {
+    function createItemOnEnterHandler(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
             createItemHandler()
         }
     }
 
-    const createItemHandler  = () => {
+    const createItemHandler = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
             addItem(trimmedTitle)
@@ -33,13 +33,16 @@ export const CreateItem: FC<Props> = ({addItem}) => {
 
     return (
         <div>
-            <input
+            <TextField
+                label={"Type name"}
                 className={error ? "input-error" : ""}
                 value={title}
-                onKeyDown={createItemOnEnterHandler }
-                onChange={changeItemTitleHandler }
+                onKeyDown={createItemOnEnterHandler}
+                onChange={changeItemTitleHandler}
+                error={!!error}
             />
-            <Button onClick={createItemHandler} variant="contained" color={"inherit"}  >+</Button>
+
+            <Button onClick={createItemHandler} variant="contained" color={"inherit"}>+</Button>
             {
                 error && <div className={"error"}>{error}</div>
             }
