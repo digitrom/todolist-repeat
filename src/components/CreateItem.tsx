@@ -1,6 +1,6 @@
 import React, {FC, useState} from "react";
-import {Button, IconButton, TextField} from "@mui/material";
-import {ControlPoint} from "@mui/icons-material";
+import {IconButton, TextField} from "@mui/material";
+import AddBoxIcon from '@mui/icons-material/AddBox'
 
 type Props = {
     addItem: (title: string) => void
@@ -44,7 +44,7 @@ export const CreateItem: FC<Props> = ({addItem}) => {
                 helperText={error}
             />
 
-            <IconButton  onClick={createItemHandler} color={"primary"}><ControlPoint/></IconButton>
+            <IconButton  onClick={createItemHandler} color={"primary"}><AddBoxIcon/></IconButton>
         </div>
 
     )
